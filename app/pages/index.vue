@@ -7,9 +7,5 @@
 <script lang="ts" setup>
 const toto = () => {
     console.log("'adazd'")
-    console.log("'adazd'")
-    console.log("'adazd'")
-    console.log("'adazd'")
-    console.log("'adazd'")
 }
 </script>
