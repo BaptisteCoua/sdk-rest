@@ -1,5 +1,5 @@
 import type { Connector, ApiRequest, ApiResponse } from '../types/Connector'
-import { Operation } from '../types/Connector'
+import { HttpMethod } from '../types/Connector'
 
 import type {
   ResourceDefinition,
@@ -17,7 +17,7 @@ export class ResourceExecutor<T> implements ResourceDefinition<T> {
     const response = await this.execute<T>({
       resource: `${this.resource}/:id`,
       params,
-      operation: Operation.READ,
+      method: HttpMethod.READ
     })
 
     return response
@@ -27,7 +27,7 @@ export class ResourceExecutor<T> implements ResourceDefinition<T> {
     const response = await this.execute<T[]>({
       resource: this.resource,
       query: params?.query,
-      operation: Operation.READ,
+      method: HttpMethod.READ
     })
 
     return response
@@ -37,7 +37,7 @@ export class ResourceExecutor<T> implements ResourceDefinition<T> {
     const response = await this.execute<T>({
       resource: this.resource,
       payload,
-      operation: Operation.CREATE,
+      method: HttpMethod.CREATE
     })
 
     return response
@@ -51,7 +51,7 @@ export class ResourceExecutor<T> implements ResourceDefinition<T> {
       resource: `${this.resource}/:id`,
       params,
       payload,
-      operation: Operation.UPDATE,
+      method: HttpMethod.UPDATE
     })
 
     return response
@@ -61,25 +61,23 @@ export class ResourceExecutor<T> implements ResourceDefinition<T> {
     await this.execute({
       resource: `${this.resource}/:id`,
       params,
-      operation: Operation.DELETE,
+      method: HttpMethod.DELETE
     })
   }
   
   private async execute<R>(input: {
     resource: string
-    params?: Record<string, string | number>
+    method: HttpMethod
+    params?: ResourceIdentifier | ResourceSearchQuery
     query?: Record<string, string | number | boolean>
     payload?: unknown
-    operation: Operation
   }): Promise<R> {
     const request: ApiRequest = {
       resource: input.resource,
+      method: input.method,
       params: input.params,
       query: input.query,
       payload: input.payload,
-      metadata: {
-        operation: input.operation,
-      },
     }
 
     const response: ApiResponse<R> =

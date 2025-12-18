@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      apiBase: 'https://api.escuelajs.co/api/v1'
+    }
+  },
   modules: ['@nuxt/eslint', 'vuetify-nuxt-module'],
   vuetify: {
     moduleOptions: {

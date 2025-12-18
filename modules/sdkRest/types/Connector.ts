@@ -1,14 +1,21 @@
+import type { ResourceIdentifier, ResourceSearchQuery } from "../resource/ResourceDefinition"
+
 export interface ApiRequest {
   resource: string
-  params?: Record<string, string | number>
+  method: HttpMethod
+  params?: ResourceIdentifier | ResourceSearchQuery
   query?: Record<string, string | number | boolean>
-  payload?: unknown
+  payload?: Serializable
   metadata?: {
-    operation: Operation
-    timeoutMs?: number
     headers?: Record<string, string>
+    timeoutMs?: number
   }
 }
+
+type Serializable =
+  | Record<string, any>
+  | Array<any>
+
 
 export interface ApiResponse<T = unknown> {
   success: boolean
@@ -27,13 +34,12 @@ export interface Connector {
   execute<T = unknown>(request: ApiRequest): Promise<ApiResponse<T>>
 }
 
-
-export const Operation = {
-  READ: 'read',
-  CREATE: 'create',
-  UPDATE: 'update',
-  DELETE: 'delete',
+export const HttpMethod = {
+  READ: 'GET',
+  CREATE: 'POST',
+  UPDATE: 'PUT',
+  DELETE: 'DELETE',
 } as const
 
-export type Operation = typeof Operation[keyof typeof Operation]
+export type HttpMethod = typeof HttpMethod[keyof typeof HttpMethod]
 
