@@ -22,6 +22,7 @@ const toto = () => {
     password: "1234",
     avatar: "https://picsum.photos/800"
   }
+  
   users.create(payload)
 }
 </script>
