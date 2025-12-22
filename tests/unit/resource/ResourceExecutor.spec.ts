@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
-import { ResourceExecutor } from '@/modules/sdkRest/resource/ResourceExecutor'
-import type { Connector } from '@/modules/sdkRest/types/Connector'
+import type { Connector } from '../../../modules/sdkRest/types/Connector'
+import  {ResourceExecutor} from '../../../modules/sdkRest/resource/ResourceExecutor'
 
 describe('ResourceExecutor', () => {
   const executeMock = vi.fn()
