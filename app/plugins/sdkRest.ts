@@ -1,17 +1,19 @@
+// app/plugins/sdkRest.ts
 import { RestConnector } from '~~/modules/sdkRest/transport/RestConnector'
+import { NuxtAuthProvider } from '~/sdk/NuxtAuthProvider'
 
 export default defineNuxtPlugin(() => {
-  const runtimeConfig = useRuntimeConfig()
+  const config = useRuntimeConfig()
+  if (!config.public.apiBase) return
 
-  if(!runtimeConfig.public.apiBase) return
+  const authProvider = new NuxtAuthProvider()
 
   const connector = new RestConnector(
-    runtimeConfig.public.apiBase as string,
+    config.public.apiBase,
+    authProvider
   )
 
   return {
-    provide: {
-      connector,
-    },
+    provide: { connector },
   }
 })

@@ -1,12 +1,19 @@
 <template>
   <div>
     <v-btn @click="toto">POUSSE</v-btn>
-    {{ data }}
+    <v-btn @click="session.clear()">Clear</v-btn>
   </div>
 </template>
 
 <script lang="ts" setup>
+// import { useUserSession } from '#auth-utils'
 import { useComments } from '~/resources/users';
+
+const session = useUserSession()
+
+onMounted(() => {
+  console.log('User session:', session)
+})
 
 const users = useComments()
 

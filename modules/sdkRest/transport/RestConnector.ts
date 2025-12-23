@@ -1,17 +1,29 @@
 import type { Connector, ApiRequest, ApiResponse, ApiError} from '../types/Connector'
+import type { AuthProvider } from '../auth/AuthProvider'
 
 export class RestConnector implements Connector {
-  constructor(private readonly connector: string) {}
+  constructor(
+    private readonly connector: string,
+    private readonly auth?: AuthProvider
+  ) {}
 
   async execute<T = unknown>(request: ApiRequest): Promise<ApiResponse<T>> {
     try {
+
+      const authHeaders = this.auth
+        ? await this.auth.getAuthHeaders()
+        : {}
+        
       const url = this.buildUrl(request)
 
       const data = await $fetch<T>(url, {
         method: request.method,
         body: request.payload,
         query: request.query,
-        headers: request.metadata?.headers,
+        headers: { 
+          ...authHeaders, 
+          ...request.metadata?.headers 
+        },
         timeout: request.metadata?.timeoutMs,
       })
 

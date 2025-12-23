@@ -7,7 +7,7 @@ export default defineNuxtConfig({
       apiBase: 'https://api.escuelajs.co/api/v1'
     }
   },
-  modules: ['@nuxt/eslint', 'vuetify-nuxt-module', '@nuxt/test-utils/module'],
+  modules: ['@nuxt/eslint', 'vuetify-nuxt-module', '@nuxt/test-utils/module', 'nuxt-auth-utils'],
   vuetify: {
     moduleOptions: {
       /* module specific options */
