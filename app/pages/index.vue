@@ -27,10 +27,10 @@ const products = useProducts()
 const auth = useAuth()
 const { loggedIn, user, session, fetch, clear, openInPopup } = useUserSession()
 
-// const { data, status, pending, error, refresh, clear } = await useAsyncData(
-//   'users',
-//   (_nuxtApp) => users.details(),
-// )
+const { data, status, pending, error, refresh } = await useAsyncData(
+  'users',
+  (_nuxtApp) => users.details(),
+)
 
 const toto = () => {  
   users.search({ query: {
