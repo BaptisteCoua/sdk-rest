@@ -3,15 +3,13 @@ import { RestConnector } from '~~/modules/sdkRest/transport/RestConnector'
 export default defineNuxtPlugin(() => {
   const runtimeConfig = useRuntimeConfig()
 
-  if(!runtimeConfig.public.apiBase) return
+  // SSR: forward headers/cookies du contexte de requête
+  const fetcher = import.meta.server ? useRequestFetch() : $fetch
+  const connector = new RestConnector(runtimeConfig.public.apiBase as string, fetcher)
 
-  const connector = new RestConnector(
-    runtimeConfig.public.apiBase as string,
-  )
-
-  return {
-    provide: {
-      connector,
-    },
+  return { 
+    provide: { 
+      connector 
+    } 
   }
 })
