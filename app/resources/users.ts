@@ -1,4 +1,3 @@
-// app/resources/comments.ts
 import { defineResource } from '~~/modules/sdkRest/resource/defineResource'
 interface UsersEntry { 
     name: string
