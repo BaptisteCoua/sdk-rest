@@ -15,7 +15,8 @@
     "@nuxt/eslint": "^1.12.1",
     "eslint": "^9.39.2",
     "nuxt": "^4.2.2",
-    "vue": "^3.5.25",
+    "nuxt-auth-utils": "^0.5.26",
+    "vue": "^3.5.26",
     "vue-router": "^4.6.4",
     "vuetify-nuxt-module": "^0.19.1"
   },
@@ -24,6 +25,6 @@
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.0.11",
     "playwright-core": "^1.57.0",
-    "vitest": "^3.2.4"
+    "vitest": "^4.0.16"
   }
 }

@@ -25,7 +25,7 @@ export class ResourceExecutor<T> implements ResourceDefinition<T> {
 
   async search(params?: ResourceSearchQuery): Promise<T[]> {
     const response = await this.execute<T[]>({
-      resource: this.resource,
+      resource: `${this.resource}/search/`,
       query: params?.query,
       method: HttpMethod.READ
     })
