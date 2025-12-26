@@ -1,9 +1,9 @@
 import type { Connector } from '../types/Connector'
-import type { AuthDefinition } from './AuthDefinition'
+import type { AuthDefinition, AuthLoginPayload } from './AuthDefinition'
 
 export class AuthExecutor implements AuthDefinition {
   constructor(private readonly connector: Connector) {}
-  login(payload: any): Promise<void> {
+  login(payload: AuthLoginPayload): Promise<any> {
     return this.connector.execute({
       resource: 'auth/login',
       method: 'POST',
@@ -11,7 +11,7 @@ export class AuthExecutor implements AuthDefinition {
     })
   }
 
-  logout(): Promise<void> {
+  logout(): Promise<any> {
     return this.connector.execute({
       resource: 'auth/logout',
       method: 'POST',

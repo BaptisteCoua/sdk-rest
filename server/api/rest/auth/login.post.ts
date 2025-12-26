@@ -1,15 +1,35 @@
 import { readBody, createError } from 'h3'
+import type { PasswordLoginPayload, OAuthLoginPayload } from '~~/modules/sdkRest/auth/AuthDefinition' 
 
-type LoginBody = {
-  username?: string
-  password?: string
+type LoginBody = PasswordLoginPayload | OAuthLoginPayload
+
+const isOAuthLogin = (body: LoginBody): body is OAuthLoginPayload => {
+  return body?.type === 'oauth' || (body as OAuthLoginPayload).provider !== undefined
+}
+
+const resolveLoginEndpoint = (body: LoginBody): string => {
+  return isOAuthLogin(body) ? 'auth/oauth' : 'auth/login'
 }
 
 export default defineEventHandler(async (event) => {
   const runtimeConfig = useRuntimeConfig()
   const body = (await readBody(event)) as LoginBody
 
-  if (!body?.username || !body?.password) {
+  if (!body) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Missing login payload',
+    })
+  }
+
+  if (isOAuthLogin(body)) {
+    if (!body.provider) {
+      throw createError({
+        statusCode: 400,
+        statusMessage: 'Missing OAuth provider',
+      })
+    }
+  } else if (!body.username || !body.password) {
     throw createError({
       statusCode: 400,
       statusMessage: 'Missing username or password',
@@ -18,7 +38,7 @@ export default defineEventHandler(async (event) => {
   
   try {
     const response = await $fetch<any>(
-      `${runtimeConfig.apiBase}/auth/login`,
+      `${runtimeConfig.apiBase}/${resolveLoginEndpoint(body)}`,
       {
         method: 'POST',
         body,
